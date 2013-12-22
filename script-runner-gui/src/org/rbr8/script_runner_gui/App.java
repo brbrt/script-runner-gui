@@ -16,16 +16,18 @@ import javafx.stage.Stage;
  * @author robert
  */
 public class App extends Application {
+    
+    private static final String MAIN_FXML_FILE = "Main.fxml";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource(MAIN_FXML_FILE));
 
         Scene scene = new Scene(root);
 
+        primaryStage.setTitle("Script runner");
         primaryStage.setScene(scene);
         primaryStage.show();
-        primaryStage.setTitle("Script runner");
     }
 
     /**
