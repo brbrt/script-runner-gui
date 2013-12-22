@@ -1,3 +1,13 @@
+# NetBeans specific #
+script-runner-gui/nbproject/private/
+script-runner-gui/build/
+script-runner-gui/nbbuild/
+script-runner-gui/dist/
+script-runner-gui/nbdist/
+script-runner-gui/nbactions.xml
+script-runner-gui/nb-configuration.xml
+
+# Class Files #
 *.class
 
 # Package Files #
