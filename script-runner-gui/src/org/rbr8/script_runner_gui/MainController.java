@@ -32,13 +32,13 @@ public class MainController implements Initializable {
     private ObservableList<File> files = FXCollections.observableArrayList();
 
     @FXML
-    private Button button;
+    private Button processButton;
 
     @FXML
     private ListView filesListView;
 
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void handleProcessButtonAction(ActionEvent event) {
         System.out.println("You selected " + files.size() + " files to process.");
     }
 
