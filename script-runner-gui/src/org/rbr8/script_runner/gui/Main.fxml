@@ -3,23 +3,47 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="499.0" prefWidth="900.0" top="$null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="org.rbr8.script_runner.gui.MainController">
+<BorderPane prefHeight="499.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="org.rbr8.script_runner.gui.MainController">
   <bottom>
-    <AnchorPane fx:id="bottomBox" prefHeight="150.0" prefWidth="900.0">
+    <AnchorPane prefHeight="150.0" prefWidth="900.0">
       <children>
         <TextArea fx:id="scriptOutputTextArea" layoutX="0.0" layoutY="0.0" prefHeight="150.0" prefWidth="900.0" wrapText="true" />
       </children>
     </AnchorPane>
   </bottom>
   <center>
-    <ListView fx:id="filesListView" prefHeight="192.0" prefWidth="657.0" />
+    <BorderPane>
+      <bottom>
+        <AnchorPane prefHeight="35.0" prefWidth="900.0">
+          <Button fx:id="addFilesButton" disable="false" layoutX="7.0" layoutY="4.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="+" textAlignment="CENTER">
+            <font>
+              <Font name="System Bold" size="10.0" fx:id="x1" />
+            </font>
+          </Button>
+          <Button fx:id="removeFilesButton" disable="false" font="$x1" layoutX="42.0" layoutY="4.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" text="ㄧ" />
+        </AnchorPane>
+      </bottom>
+      <center>
+        <ListView fx:id="filesListView" prefHeight="192.0" prefWidth="657.0" />
+      </center>
+    </BorderPane>
   </center>
-  <right>
-    <AnchorPane fx:id="rightBox" minWidth="140.0" prefHeight="390.0" prefWidth="140.0">
-      <Button fx:id="addFilesButton" disable="true" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Add files" />
-      <Button fx:id="removeFilesButton" disable="true" layoutX="10.0" layoutY="68.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Remove files" />
-      <Button fx:id="processButton" layoutX="10.0" layoutY="303.0" onAction="#handleProcessButtonAction" prefHeight="40.0" prefWidth="120.0" text="Process" />
+  <top>
+    <AnchorPane prefHeight="110.0" prefWidth="900.0">
+      <children>
+        <Label layoutX="14.0" layoutY="14.0" text="Script runner GUI">
+          <font>
+            <Font name="System Bold" size="18.0" />
+          </font>
+        </Label>
+        <Label layoutX="84.0" layoutY="48.0" text="Script" />
+        <Label layoutX="50.0" layoutY="77.0" text="Arguments" />
+        <TextField layoutX="132.0" layoutY="45.0" prefWidth="417.0" />
+        <TextField layoutX="132.0" layoutY="74.0" prefWidth="417.0" />
+        <Button fx:id="processButton" layoutX="757.0" layoutY="55.0" onAction="#handleProcessButtonAction" prefHeight="35.0" prefWidth="120.0" text="Start" />
+      </children>
     </AnchorPane>
-  </right>
+  </top>
 </BorderPane>
