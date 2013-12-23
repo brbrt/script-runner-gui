@@ -24,7 +24,6 @@
 
 package org.rbr8.script_runner.gui;
 
-import org.rbr8.script_runner.util.ProcessHelper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -43,6 +42,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import org.rbr8.script_runner.util.BatchScriptRunner;
+import org.rbr8.script_runner.util.ScriptInfo;
+import org.rbr8.script_runner.util.SubstitutionHelper;
 
 /**
  *
@@ -60,9 +62,17 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleProcessButtonAction(ActionEvent event) throws IOException {
-//        System.out.println("You selected " + files.size() + " files to process.");
-        ProcessHelper ph = new ProcessHelper();
-        ph.startProcess("");
+        
+        ScriptInfo scriptInfo = new ScriptInfo();
+        scriptInfo.setExecutable("ls");
+        scriptInfo.getArguments().add(SubstitutionHelper.FILE_SUBSTITUTED);
+        
+        
+        BatchScriptRunner runner = new BatchScriptRunner(scriptInfo);
+        
+        for (File file : files) {
+            runner.processFile(file);
+        }
     }
 
     @Override

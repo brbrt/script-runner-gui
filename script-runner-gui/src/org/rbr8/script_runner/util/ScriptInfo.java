@@ -24,45 +24,36 @@
 
 package org.rbr8.script_runner.util;
 
-import java.io.IOException;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.PumpStreamHandler;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author robert
  */
-public class ProcessHelper {
+public class ScriptInfo {
     
-    public ProcessHelper() {}
+    private String executable;
     
-    public void startProcess(String fileName) throws IOException {
+    private List<String> arguments = new ArrayList<>();  
+    
+    public ScriptInfo() {}
 
-        
-        CommandLine cmdLine = new CommandLine("ls");
-//        cmdLine.addArgument("-l");
-//        cmdLine.addArgument("/h");
-//        cmdLine.addArgument("${file}");
-        
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("file", new File(fileName));
-//        cmdLine.setSubstitutionMap(map);
-        
-        
-        DefaultExecutor executor = new DefaultExecutor();
-//        executor.setExitValue(1);
-        
-        CollectingLogOutputStream outputLog = new CollectingLogOutputStream();
-        PumpStreamHandler psh = new PumpStreamHandler(outputLog);
-        executor.setStreamHandler(psh);
-        
-//        ExecuteWatchdog watchdog = new ExecuteWatchdog(60000);
-//        executor.setWatchdog(watchdog);
-        
-        int exitValue = executor.execute(cmdLine);
-        
-        
-        System.out.println(outputLog.getLines());
+    public String getExecutable() {
+        return executable;
     }
+
+    public void setExecutable(String executable) {
+        this.executable = executable;
+    }
+
+    public List<String> getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(List<String> arguments) {
+        this.arguments = arguments;
+    }
+    
+    
 }

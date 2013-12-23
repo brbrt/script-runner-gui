@@ -11,6 +11,5 @@ script-runner-gui/nb-configuration.xml
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear

@@ -24,24 +24,18 @@
 
 package org.rbr8.script_runner.util;
 
-import java.util.LinkedList;
-import java.util.List;
-import org.apache.commons.exec.LogOutputStream;
-
 /**
  *
  * @author robert
  */
-public class CollectingLogOutputStream extends LogOutputStream {
+public class SubstitutionHelper {
+
+    public static final String FILE = "file";
     
-    private final List<String> lines = new LinkedList<>();
+    public static final String FILE_SUBSTITUTED = getSubstitutionForm(FILE);
     
-    @Override 
-    protected void processLine(String line, int level) {
-        lines.add(line);
-    }   
     
-    public List<String> getLines() {
-        return lines;
+    public static String getSubstitutionForm(String val) {
+        return "${" + val + "}";
     }
 }
