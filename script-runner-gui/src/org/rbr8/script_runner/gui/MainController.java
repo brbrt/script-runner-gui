@@ -39,10 +39,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import org.rbr8.script_runner.util.BatchScriptRunner;
+import org.rbr8.script_runner.util.LogOutputStreamListener;
 import org.rbr8.script_runner.util.ScriptInfo;
 import org.rbr8.script_runner.util.SubstitutionHelper;
 
@@ -59,16 +61,26 @@ public class MainController implements Initializable {
 
     @FXML
     private ListView filesListView;
+    
+    @FXML
+    private TextArea scriptOutputTextArea;
 
     @FXML
     private void handleProcessButtonAction(ActionEvent event) throws IOException {
-        
+
         ScriptInfo scriptInfo = new ScriptInfo();
         scriptInfo.setExecutable("ls");
         scriptInfo.getArguments().add(SubstitutionHelper.FILE_SUBSTITUTED);
         
         
         BatchScriptRunner runner = new BatchScriptRunner(scriptInfo);
+        
+        runner.getLogOutputStream().addListener(new LogOutputStreamListener() {
+            @Override
+            public void lineAdded(String line) {
+                appendToScriptOutputTextArea(line);
+            }
+        });
         
         for (File file : files) {
             runner.processFile(file);
@@ -148,5 +160,9 @@ public class MainController implements Initializable {
                 files.add(f);
             }
         }
+    }
+    
+    private void appendToScriptOutputTextArea(String text) {
+        scriptOutputTextArea.appendText(text + "\n");
     }
 }

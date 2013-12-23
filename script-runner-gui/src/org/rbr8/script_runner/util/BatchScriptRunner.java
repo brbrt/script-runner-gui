@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package org.rbr8.script_runner.util;
 
 import java.io.File;
@@ -37,40 +36,46 @@ import org.apache.commons.exec.PumpStreamHandler;
  * @author robert
  */
 public class BatchScriptRunner {
-    
-    private ScriptInfo scriptInfo;
-    
+
+    private final ScriptInfo scriptInfo;
+
+    private final NotifierLogOutputStream logOutputStream;
+
     public BatchScriptRunner(ScriptInfo scriptInfo) {
         this.scriptInfo = scriptInfo;
+
+        this.logOutputStream = new NotifierLogOutputStream();
     }
-    
+
     public void processFile(File file) throws IOException {
-        
+
         CommandLine cmdLine = new CommandLine(scriptInfo.getExecutable());
-        
+
         for (String arg : scriptInfo.getArguments()) {
             cmdLine.addArgument(arg);
         }
 
-        
         Map<String, Object> map = new HashMap<>();
         map.put(SubstitutionHelper.FILE, file);
         cmdLine.setSubstitutionMap(map);
-        
-        
+
         DefaultExecutor executor = new DefaultExecutor();
 //        executor.setExitValue(1);
-        
-        CollectingLogOutputStream outputLog = new CollectingLogOutputStream();
-        PumpStreamHandler psh = new PumpStreamHandler(outputLog);
+
+//        NotifierLogOutputStream outputLog = new NotifierLogOutputStream();
+        PumpStreamHandler psh = new PumpStreamHandler(logOutputStream);
         executor.setStreamHandler(psh);
-        
+
 //        ExecuteWatchdog watchdog = new ExecuteWatchdog(60000);
 //        executor.setWatchdog(watchdog);
-        
         int exitValue = executor.execute(cmdLine);
-        
-        
-        System.out.println(outputLog.getLines());
+    }
+
+    public ScriptInfo getScriptInfo() {
+        return scriptInfo;
+    }
+
+    public NotifierLogOutputStream getLogOutputStream() {
+        return logOutputStream;
     }
 }

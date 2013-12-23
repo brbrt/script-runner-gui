@@ -24,24 +24,10 @@
 
 package org.rbr8.script_runner.util;
 
-import java.util.LinkedList;
-import java.util.List;
-import org.apache.commons.exec.LogOutputStream;
-
 /**
  *
  * @author robert
  */
-public class CollectingLogOutputStream extends LogOutputStream {
-    
-    private final List<String> lines = new LinkedList<>();
-    
-    @Override 
-    protected void processLine(String line, int level) {
-        lines.add(line);
-    }   
-    
-    public List<String> getLines() {
-        return lines;
-    }
+public interface LogOutputStreamListener {
+    void lineAdded(String line);
 }
