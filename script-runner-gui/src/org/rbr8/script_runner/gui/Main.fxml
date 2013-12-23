@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="450.0" prefWidth="900.0" top="$null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="org.rbr8.script_runner_gui.MainController">
+<BorderPane prefHeight="450.0" prefWidth="900.0" top="$null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="org.rbr8.script_runner.gui.MainController">
   <bottom>
     <AnchorPane fx:id="bottomBox" prefHeight="60.0" prefWidth="796.0">
       <Button fx:id="addFilesButton" disable="true" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Add files" />
