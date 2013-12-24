@@ -21,39 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.rbr8.script_runner.gui;
 
-package org.rbr8.script_runner.util;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
  * @author robert
  */
-public class ScriptInfo {
-    
-    private String executable;
-    
-    private List<String> arguments = new ArrayList<>();  
-    
-    public ScriptInfo() {}
+public class ScriptInfoModel {
 
-    public String getExecutable() {
+    private StringProperty executable = new SimpleStringProperty();
+
+    public final String getExecutable() {
+        return executable.get();
+    }
+
+    public final void setExecutable(String executable) {
+        this.executable.set(executable);
+    }
+
+    public StringProperty executableProperty() {
         return executable;
     }
 
-    public void setExecutable(String executable) {
-        this.executable = executable;
+    
+    private StringProperty arguments = new SimpleStringProperty();
+    
+    public final String getArguments() {
+        return arguments.get();
     }
 
-    public List<String> getArguments() {
+    public final void setArguments(String arguments) {
+        this.arguments.set(arguments);
+    }
+
+    public StringProperty argumentsProperty() {
         return arguments;
     }
-
-    public void setArguments(List<String> arguments) {
-        this.arguments = arguments;
-    }
-    
-    
 }

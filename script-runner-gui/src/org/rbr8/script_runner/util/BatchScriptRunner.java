@@ -37,23 +37,23 @@ import org.apache.commons.exec.PumpStreamHandler;
  */
 public class BatchScriptRunner {
 
-    private final ScriptInfo scriptInfo;
+    private final String executable;
+    
+    private final String arguments;
 
     private final NotifierLogOutputStream logOutputStream;
 
-    public BatchScriptRunner(ScriptInfo scriptInfo) {
-        this.scriptInfo = scriptInfo;
+    public BatchScriptRunner(String executable, String arguments) {
+        this.executable = executable;
+        this.arguments = arguments;
 
         this.logOutputStream = new NotifierLogOutputStream();
     }
 
     public void processFile(File file) throws IOException {
 
-        CommandLine cmdLine = new CommandLine(scriptInfo.getExecutable());
-
-        for (String arg : scriptInfo.getArguments()) {
-            cmdLine.addArgument(arg);
-        }
+        CommandLine cmdLine = new CommandLine(executable);
+        cmdLine.addArguments(arguments);
 
         Map<String, Object> map = new HashMap<>();
         map.put(SubstitutionHelper.FILE, file);
@@ -71,10 +71,14 @@ public class BatchScriptRunner {
         int exitValue = executor.execute(cmdLine);
     }
 
-    public ScriptInfo getScriptInfo() {
-        return scriptInfo;
+    public String getExecutable() {
+        return executable;
     }
 
+    public String getArguments() {
+        return arguments;
+    }
+    
     public NotifierLogOutputStream getLogOutputStream() {
         return logOutputStream;
     }

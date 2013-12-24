@@ -29,27 +29,25 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import org.rbr8.script_runner.util.BatchScriptRunner;
 import org.rbr8.script_runner.util.LogOutputStreamListener;
-import org.rbr8.script_runner.util.ScriptInfo;
-import org.rbr8.script_runner.util.SubstitutionHelper;
 
 /**
  *
@@ -58,8 +56,16 @@ import org.rbr8.script_runner.util.SubstitutionHelper;
 public class MainController implements Initializable {
 
     private Stage stage;
-    
+
+    private ScriptInfoModel scriptInfoModel = new ScriptInfoModel();
+
     private ObservableList<File> files = FXCollections.observableArrayList();
+
+    @FXML
+    private TextField executableTextField;
+
+    @FXML
+    private TextField argumentsTextField;
 
     @FXML
     private Button processButton;
@@ -77,21 +83,17 @@ public class MainController implements Initializable {
     private void handleSelectScriptButtonAction(ActionEvent event) throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select program to run");
-        
+
         File choosenFile = fileChooser.showOpenDialog(stage);
         if (choosenFile != null) {
-            
+            scriptInfoModel.setExecutable(choosenFile.getPath());
         }
     }
 
     @FXML
     private void handleProcessButtonAction(ActionEvent event) throws IOException {
 
-        ScriptInfo scriptInfo = new ScriptInfo();
-        scriptInfo.setExecutable("ls");
-        scriptInfo.getArguments().add(SubstitutionHelper.FILE_SUBSTITUTED);
-
-        BatchScriptRunner runner = new BatchScriptRunner(scriptInfo);
+        BatchScriptRunner runner = new BatchScriptRunner(scriptInfoModel.getExecutable(), scriptInfoModel.getArguments());
 
         runner.getLogOutputStream().addListener(new LogOutputStreamListener() {
             @Override
@@ -110,8 +112,11 @@ public class MainController implements Initializable {
         setupGestureTarget(filesListView);
 
         filesListView.setItems(files);
+
+        Bindings.bindBidirectional(scriptInfoModel.executableProperty(), executableTextField.textProperty());
+        Bindings.bindBidirectional(scriptInfoModel.argumentsProperty(), argumentsTextField.textProperty());
     }
-    
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
