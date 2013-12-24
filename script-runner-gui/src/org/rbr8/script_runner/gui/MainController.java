@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package org.rbr8.script_runner.gui;
 
 import java.io.File;
@@ -36,6 +35,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
@@ -43,6 +43,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.rbr8.script_runner.util.BatchScriptRunner;
 import org.rbr8.script_runner.util.LogOutputStreamListener;
 import org.rbr8.script_runner.util.ScriptInfo;
@@ -54,16 +57,32 @@ import org.rbr8.script_runner.util.SubstitutionHelper;
  */
 public class MainController implements Initializable {
 
+    private Stage stage;
+    
     private ObservableList<File> files = FXCollections.observableArrayList();
 
     @FXML
     private Button processButton;
 
     @FXML
+    private Button selectScriptButton;
+
+    @FXML
     private ListView filesListView;
-    
+
     @FXML
     private TextArea scriptOutputTextArea;
+
+    @FXML
+    private void handleSelectScriptButtonAction(ActionEvent event) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select program to run");
+        
+        File choosenFile = fileChooser.showOpenDialog(stage);
+        if (choosenFile != null) {
+            
+        }
+    }
 
     @FXML
     private void handleProcessButtonAction(ActionEvent event) throws IOException {
@@ -71,17 +90,16 @@ public class MainController implements Initializable {
         ScriptInfo scriptInfo = new ScriptInfo();
         scriptInfo.setExecutable("ls");
         scriptInfo.getArguments().add(SubstitutionHelper.FILE_SUBSTITUTED);
-        
-        
+
         BatchScriptRunner runner = new BatchScriptRunner(scriptInfo);
-        
+
         runner.getLogOutputStream().addListener(new LogOutputStreamListener() {
             @Override
             public void lineAdded(String line) {
                 appendToScriptOutputTextArea(line);
             }
         });
-        
+
         for (File file : files) {
             runner.processFile(file);
         }
@@ -93,13 +111,17 @@ public class MainController implements Initializable {
 
         filesListView.setItems(files);
     }
+    
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     private void setupGestureTarget(final Control target) {
 
         target.setOnDragOver(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent event) {
-                
+
                 // Accept only files.
                 if (event.getGestureSource() != target && event.getDragboard().hasFiles()) {
                     event.acceptTransferModes(TransferMode.ANY);
@@ -127,7 +149,7 @@ public class MainController implements Initializable {
             @Override
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
-                
+
                 boolean success = false;
 
                 if (db != null && db.hasFiles()) {
@@ -161,7 +183,7 @@ public class MainController implements Initializable {
             }
         }
     }
-    
+
     private void appendToScriptOutputTextArea(String text) {
         scriptOutputTextArea.appendText(text + "\n");
     }

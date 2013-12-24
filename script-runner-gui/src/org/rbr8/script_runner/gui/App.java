@@ -21,11 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package org.rbr8.script_runner.gui;
 
+import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -35,12 +36,21 @@ import javafx.stage.Stage;
  * @author robert
  */
 public class App extends Application {
-    
+
     private static final String MAIN_FXML_FILE = "Main.fxml";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource(MAIN_FXML_FILE));
+        URL location = getClass().getResource(MAIN_FXML_FILE);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(location);
+        loader.setBuilderFactory(new JavaFXBuilderFactory());
+
+        Parent root = (Parent) loader.load(location.openStream());
+
+        MainController mainController = loader.getController();
+        mainController.setStage(primaryStage);
 
         Scene scene = new Scene(root);
 
