@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -93,18 +94,29 @@ public class MainController implements Initializable {
     @FXML
     private void handleProcessButtonAction(ActionEvent event) throws IOException {
 
-        BatchScriptRunner runner = new BatchScriptRunner(scriptInfoModel.getExecutable(), scriptInfoModel.getArguments());
-
-        runner.getLogOutputStream().addListener(new LogOutputStreamListener() {
+        Task<Integer> task = new Task<Integer>() {
+            
             @Override
-            public void lineAdded(String line) {
-                appendToScriptOutputTextArea(line);
-            }
-        });
+            protected Integer call() throws Exception {
+                BatchScriptRunner runner = new BatchScriptRunner(scriptInfoModel.getExecutable(), scriptInfoModel.getArguments());
 
-        for (File file : files) {
-            runner.processFile(file);
-        }
+                runner.getLogOutputStream().addListener(new LogOutputStreamListener() {
+                    @Override
+                    public void lineAdded(String line) {
+                        appendToScriptOutputTextArea(line);
+                    }
+                });
+
+                for (File file : files) {
+                    runner.processFile(file);
+                }
+
+                return 0;
+            }
+
+        };
+
+        new Thread(task).start();
     }
 
     @Override
